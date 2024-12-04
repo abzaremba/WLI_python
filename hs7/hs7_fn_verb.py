@@ -128,8 +128,8 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     OUTPUT:
     The output should only contain 3 elements: 
     1) "hate speech" or "not hate speech", 
-    2) one or more protected characteristic labels from the list: {protected_characteristics_str}, 
-    3) the probability with two decimal points for each protected characteristic.
+    2) list of protected characteristic labels from the list: {protected_characteristics_str}, 
+    3) list of probabilities with two decimal points, one for each protected characteristic.
 
     OUTPUT FORMAT:
     ['hate speech', ['sexual orientation'], [0.98]]
@@ -138,7 +138,7 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     {chain_ot_section}
     
     MESSAGE:
-    {message}. 
+    {message}
     """
     ### part that if added suddenly doesn't recognise transphobia and misogyny:
 

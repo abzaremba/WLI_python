@@ -1,0 +1,31 @@
+,Text,Model,Includes,Input Tokens,Output Tokens,Total cost,Response
+0,I would kill for a b,gpt-3.5-turbo-0125,",",309,78,0.001395,"OUTPUT:
+['not hate speech', ['race', 'religion', 'ethnic origin', 'national origin', 'sex', 'disability', 'sexual orientation', 'gender identity'], [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]]"
+1,I would kill for a b,gpt-3.5-turbo-0125,"hs_examples_str,chain_ot_str",315,78,0.0014130000000000002,"OUTPUT:
+['not hate speech', ['race', 'religion', 'ethnic origin', 'national origin', 'sex', 'disability', 'sexual orientation', 'gender identity'], [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]]"
+2,I would kill for a b,gpt-4o-mini-2024-07-18,",",309,8,5.1149999999999996e-05,"['not hate speech', [], []]"
+3,I would kill for a b,gpt-4o-mini-2024-07-18,"hs_examples_str,chain_ot_str",315,9,5.2650000000000006e-05,"['not hate speech', [], []]"
+4,"Hey dude, just becau",gpt-3.5-turbo-0125,",",335,17,0.0011070000000000001,"OUTPUT:
+['hate speech', ['gender identity'], [0.95]]"
+5,"Hey dude, just becau",gpt-3.5-turbo-0125,"hs_examples_str,chain_ot_str",341,17,0.0011250000000000001,"OUTPUT:
+['hate speech', ['gender identity'], [0.95]]"
+6,"Hey dude, just becau",gpt-4o-mini-2024-07-18,",",334,14,5.85e-05,"['hate speech', ['gender identity'], [0.95]]"
+7,"Hey dude, just becau",gpt-4o-mini-2024-07-18,"hs_examples_str,chain_ot_str",340,14,5.94e-05,"['hate speech', ['gender identity'], [0.95]]"
+8,Tesla CEO Elon Musk ,gpt-3.5-turbo-0125,",",771,19,0.002427,"    OUTPUT:
+    ['hate speech', ['gender identity'], [0.98]]"
+9,Tesla CEO Elon Musk ,gpt-3.5-turbo-0125,"hs_examples_str,chain_ot_str",777,19,0.002445,"    OUTPUT:
+    ['hate speech', ['gender identity'], [0.98]]"
+10,Tesla CEO Elon Musk ,gpt-4o-mini-2024-07-18,",",771,14,0.00012404999999999998,"['hate speech', ['gender identity'], [0.95]]"
+11,Tesla CEO Elon Musk ,gpt-4o-mini-2024-07-18,"hs_examples_str,chain_ot_str",777,14,0.00012495,"['hate speech', ['gender identity'], [0.95]]"
+12,Clarkson defends Meg,gpt-3.5-turbo-0125,",",1257,36,0.003987,"[
+    'hate speech',
+    ['race', 'sex', 'gender identity'],
+    [0.98, 0.95, 0.99]
+]"
+13,Clarkson defends Meg,gpt-3.5-turbo-0125,"hs_examples_str,chain_ot_str",1263,28,0.003957,"[
+    'hate speech',
+    ['sex', 'gender identity'],
+    [0.98, 0.95]
+]"
+14,Clarkson defends Meg,gpt-4o-mini-2024-07-18,",",1245,13,0.00019454999999999999,"['hate speech', ['sex'], [0.95]]"
+15,Clarkson defends Meg,gpt-4o-mini-2024-07-18,"hs_examples_str,chain_ot_str",1251,13,0.00019544999999999998,"['hate speech', ['sex'], [0.95]]"

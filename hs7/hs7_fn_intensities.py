@@ -89,10 +89,11 @@ for ind in range(len(chain_of_thought_dict)):
   chain_ot_str += "\n" + str(chain_of_thought_dict[ind])[1:-1]
 
 
-def classify_hs(message:str, protected_characteristics_str:str, HS_definition:str, examples:str, chain_ot:str, verbose=False, context="", extra_notes="", model="gpt-3.5-turbo"):
+def classify_hs(message:str, protected_characteristics_str:str, HS_definition:str, examples:str, chain_ot:str, verbose=False, context="", hs_intensities="", 
+                extra_notes_instruction="",extra_notes_output=""):
     
     # is context provided
-    if context==[]:
+    if context==[] or context=="NA":
        context_section = ""
     else:
        context_section = f"""
@@ -114,25 +115,36 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
        chain_ot_section = f"""
     CHAIN-OF-THOUGHT:
     Consider the following chain-of-thought:{chain_ot}"""
+       
+    # are hate speech categories provided
+    if hs_intensities==[]:
+       hs_intensities_section = ""
+    else:
+       hs_intensities_section = f"""
+    HATE SPEECH INTENSITY:
+    Consider the following INTENSITY LEVELS for HATE SPEECH:{hs_intensities}"""
 
 
     prompt = f"""
     DEFINITIONS:
     Consider the following definition: {HS_definition}. 
     {context_section}
+    {hs_intensities_section}
 
     INSTRUCTION: 
     Using the provided definition of hate speech, classify the following fragment from a chat as either hate speech with respect to one or more of protected characteristics from the following list: {protected_characteristics_str}, or not hate speech with respect to the protected characteristics from the following list: {protected_characteristics_str}.
-    {extra_notes}
+    {extra_notes_instruction}
 
     OUTPUT:
-    The output should only contain 3 elements: 
+    The output should only contain 4 elements: 
     1) "hate speech" or "not hate speech", 
     2) list of protected characteristic labels from the list: {protected_characteristics_str}, 
     3) list of probabilities with two decimal points, one for each protected characteristic.
+    {extra_notes_output}
 
     OUTPUT FORMAT:
-    ['hate speech', ['sexual orientation'], [0.98]]
+    ['hate speech', ['sexual orientation'], [0.98], ['Violence']]
+    ['not hate speech', [''], [], ['']]
 
     {examples_section}
     {chain_ot_section}
@@ -150,17 +162,14 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
        print(prompt)
 
     response = client.chat.completions.create(
-      # model="gpt-3.5-turbo",
-      model = model,
-      temperature = 0.0,
-      messages=[
-               {"role": "user", "content": prompt}
-         ]
+    model="gpt-3.5-turbo",
+    temperature = 0.0,
+    messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
 
-    return response
-    # return response.choices[0].message.content
-
+    return response.choices[0].message.content
 
 # response = completion["choices"][0]["text"].strip()
 

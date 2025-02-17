@@ -84,7 +84,7 @@ while True:
           print("Godbye!")
           break
     else:
-          print(classify_hs(
+          response = classify_hs(
                  message = user_input, 
                  protected_characteristics_str = ", ".join(protected_characteristics), 
                  HS_definition=HS_definition, 
@@ -94,5 +94,7 @@ while True:
                  chain_ot=chain_ot_str,
                  verbose = True,
                  context=user_input_context
-                 ))
+                 )
+          print(response.choices[0].message.content)
+          
     

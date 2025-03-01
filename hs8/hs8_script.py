@@ -16,7 +16,8 @@ protected_characteristics = [
 ]
 
 # DEFINITION OF HATE SPEECH:1
-HS_definition = '"Hate speech" is speech that attacks a person or group on the basis of attributes such as: ' + ', '.join(protected_characteristics) +'.'
+HS_definition_str = '"Hate speech" is speech that attacks a person or group on the basis of "protected characteristics".'
+HS_definition_with_prot_char = '"Hate speech" is speech that attacks a person or group on the basis of attributes such as: ' + ', '.join(protected_characteristics) +'.'
 ############################################################
 
 
@@ -87,7 +88,7 @@ while True:
           response = classify_hs(
                  message = user_input, 
                  protected_characteristics_str = ", ".join(protected_characteristics), 
-                 HS_definition=HS_definition, 
+                 HS_definition=HS_definition_str, 
                 #  examples=[],
                  examples=hs_examples_str,
                 #  chain_ot=[],

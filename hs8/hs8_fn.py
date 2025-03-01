@@ -94,16 +94,16 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     
 
     # are context sections provided?    
-    if community_context!=[]:
+    if community_context!="":
        community_context = f"""
     Consider the following context provided by the community: {community_context}"""
-    if languages!=[]:
+    if languages!="":
        languages = f"""
     Languages that can be expected: {languages}"""
-    if community_context!=[]:
+    if community_context!="":
        examples_section = f"""
     Geographical regions: {community_context}"""
-    if community_context!=[]:
+    if community_context!="":
        examples_section = f"""
     Safeguarding issues that are the most important for this community: {community_context}"""
 
@@ -155,10 +155,6 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     MESSAGE:
     ```{message}```
     """
-    ### part that if added suddenly doesn't recognise transphobia and misogyny:
-
-    # OUTPUT FORMAT EXAMPLE:
-    # 'hate speech', 'religion', 0.98
 
 
     if verbose:
@@ -174,15 +170,3 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     )
 
     return response
-    # return response.choices[0].message.content
-
-
-# response = completion["choices"][0]["text"].strip()
-
-# for text in test_texts:
-#     print("=============================")
-#     print(classify_hs(
-#             message = text, 
-#             protected_characteristics_str = ", ".join(protected_characteristics), 
-#             HS_definition=HS_definition, 
-#             examples=hs_examples_str))

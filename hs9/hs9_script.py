@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-from hs8_fn import classify_hs
+from hs9_fn import classify_hs
 
 client = OpenAI(api_key = os.environ.get("OPENAI_API_KEY"))
 
@@ -9,15 +9,14 @@ client = OpenAI(api_key = os.environ.get("OPENAI_API_KEY"))
 # PROTECTED CHARACTERISTICS!
 # OR CATEGORIES 
 
-protected_characteristics = [
-    'race', 'religion', 'ethnic origin', 'national origin', 'sex', 'disability', 'sexual orientation', 'gender identity',
-    # 'body size'
-    #'neurotype', 'body size'
+# very short list
+protected_characteristics_default = [
+    'race', 'religion', 'sexual orientation', 'gender' 
+#   'race', 'religion', 'ethnic origin', 'national origin', 'sex', 'disability', 'sexual orientation', 'gender identity'
 ]
 
 # DEFINITION OF HATE SPEECH:1
-HS_definition_str = '"Hate speech" is speech that attacks a person or group on the basis of "protected characteristics".'
-HS_definition_with_prot_char = '"Hate speech" is speech that attacks a person or group on the basis of attributes such as: ' + ', '.join(protected_characteristics) +'.'
+HS_definition = 'Hate speech is defined as speech that attacks a person or group based on attributes such as ' + ', '.join(protected_characteristics_default) +'.'
 ############################################################
 
 
@@ -25,19 +24,17 @@ HS_definition_with_prot_char = '"Hate speech" is speech that attacks a person or
 # EXAMPLES!!!
 hs_examples_dict = [
     {'example input':'You lost! Succer!',
-     'example output':['not hate speech',[''], [1]]},
+     'example output':['not hate speech',[], [1]]},
     {'example input':'you hateful sack of flesh',
-     'example output':['not hate speech',[''], [1]]},
+     'example output':['not hate speech',[], [1]]},
     {'example input':'“Pick one, kidd,” one nudged. Then, “Choose FA GO TT.”',
      'example output':['hate speech',['sexual orientation'], [1]]},
-    # {'example input':'Aspie my ass. too slow to remember, so dont waste our time playing',
-    #  'example output':['hate speech',['neurotype'], [1]]},
     {'example input':'“Kept being called a "Jew" for no reason.”; "A player on the other team was named Hitler.” “[One player] threatened to get antisemitic if I didnt talk. [They] talked about Jew tunnels.”',
-     'example output':['hate speech',['race'], [1]]},
+     'example output':['hate speech',['race','religion'], [1,1]]},
     {'example input':'if money was grown on trees women would be dating monkeys oh wait never mind',
      'example output':['hate speech',['sex'], [1]]},
     {'example input':'well my dear lgbtq brothers and sisters i do not want to die at the hands of a muslim terrorist and as you are putting my life in danger with your politics i would like to suggest that you all go fuck yourselves',
-     'example output':['hate speech',['gender identity', 'sexual orientation', 'religion'], [0.97,0.97,1]]}
+     'example output':['hate speech',['gender identity', 'sexual orientation', 'religion'],  [0.97,0.97,1]]}
 ]
 
 
@@ -48,26 +45,26 @@ for ind in range(len(hs_examples_dict)):
 
 ############################################################
 # CHAIN OF THOUGHT EXAMPLES!!!
-  
-
 chain_of_thought_dict = [
-    {"example input":"There are Jews and Muslims here",
-     "example output":['not hate speech',[''], [1]],
-     "explanation":"This is a statement naming people's religions. It is neutral in tone, regadless if it's factually correct or not. So it is not hate speech"},
-    {"example input":"There are Catholics and Muslims here. Let's watch as they k*ll each other.",
-     "example output":['hate speech',['religion'], [1]],
-     "explanation":"A neutral statement naming people's religions is followed by an implied suggestion that having those religious beliefs will cause people to fight each other. So it is hate speech"},
-    {"example input":"You're saying you're a Sikh? I say turban wearing bin laden",
-     "example output":['hate speech',['religion'], [1]],
-     "explanation":"Person's religion (Sikhism) is devalued and their religious clothing (turban) is compared to a symbol of terrorism - Osama bin Laned. So it is hate speech"},
-     {"example input":"Queers are welcome here",
-     "example output":['not hate speech',['sexual orientation','gender identity'], [1]],
-     "explanation":"Statement implies inclusion and acceptance. So it is not hate speech"},
-     {"example input":"All those alphabet people should f**k off from here and stop grooming children",
-     "example output":['hate speech',['sexual orientation','gender identity'], [1]],
-     "explanation":"'alphabet people' is a slang term referring to LGBTQ+ community and is used in a hostile context. Suggestion about hurt children is used to incite hatred against LGBTQ+ people. So it is hate speech"},
+    {'example input':'You lost! Succer!',
+     'example output':['not hate speech',[], [1]],
+     "explanation":"This statement expresses frustration and is an insult but does not target any group or individual based on identity. So it is not hate speech."},
+    {'example input':'you hateful sack of flesh',
+     'example output':['not hate speech',[], [1]],
+     "explanation":"The statement is a personal insult but does not target any specific group or individual based on identity. So it is not hate speech."},
+    {'example input':'“Pick one, kidd,” one nudged. Then, “Choose FA GO TT.”',
+     'example output':['hate speech',['sexual orientation'], [1]],
+     "explanation":"The use of the slur 'FA GO TT' is a direct attack on sexual orientation, intended to demean or insult. So it is hate speech."},
+    {'example input':'“Kept being called a "Jew" for no reason.”; "A player on the other team was named Hitler.” “[One player] threatened to get antisemitic if I didnt talk. [They] talked about Jew tunnels.”',
+     'example output':['hate speech',['race','religion'], [1,1]],
+     "explanation":"The use of antisemitic language, association with Hitler, and threats based on Jewish identity constitute hate speech targeting race and religion."},
+    {'example input':'if money was grown on trees women would be dating monkeys oh wait never mind',
+     'example output':['hate speech',['sex'], [1]],
+     "explanation":"This statement uses stereotypes to demean women by comparing them to animals, which is hate speech based on sex."},
+    {'example input':'well my dear lgbtq brothers and sisters i do not want to die at the hands of a muslim terrorist and as you are putting my life in danger with your politics i would like to suggest that you all go fuck yourselves',
+     'example output':['hate speech',['gender identity', 'sexual orientation', 'religion'],  [0.97,0.97,1]],
+     "explanation":"This statement combines hostility toward the LGBTQ community with derogatory references to religion, specifically Muslims, and assigns blame. It targets multiple identities and is hate speech."}
 ]
-
 
 chain_ot_str = '\n'
 for ind in range(len(chain_of_thought_dict)):
@@ -87,8 +84,8 @@ while True:
     else:
           response = classify_hs(
                  message = user_input, 
-                 protected_characteristics_str = ", ".join(protected_characteristics), 
-                 HS_definition=HS_definition_str, 
+                 protected_characteristics_str = ", ".join(protected_characteristics_default), 
+                 HS_definition=HS_definition, 
                 #  examples=[],
                  examples=hs_examples_str,
                 #  chain_ot=[],

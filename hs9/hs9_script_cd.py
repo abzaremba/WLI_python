@@ -105,28 +105,29 @@ config_values = prepare_config(df_context, row_context)
 message = messages['message'][row_message]
 
 # pprint(config_values)
-print(messages)
+# print(messages)
+
+
 
 # no request for input, just use the context and message read from csv files
-for row_context in range(1): #range(df_context.shape[0]):
-    print(row_context)
+for row_context in range(df_context.shape[0]):
     config_values = prepare_config(df_context, row_context)
-    pprint(config_values)
+    # pprint(config_values)
 
-    print(f"{'#'*20} Context provided: {' '*20} {'#'*20} ")
-    print(f"\n{'#'*5} community_context:\n{config_values['community_context']}")
-    print(f"\n{'#'*5} languages:\n{config_values['languages']}")
-    print(f"\n{'#'*5} geography:\n{config_values['geography']}")
-    print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
-    print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
-    for row_message in range(messages.shape[0]):     
-          print(row_message)
+    print(f"{'#'*30} Context provided number {row_context:3}:")
+    # print(f"\n{'#'*5} community_context:\n{config_values['community_context']}")
+    # print(f"\n{'#'*5} languages:\n{config_values['languages']}")
+    # print(f"\n{'#'*5} geography:\n{config_values['geography']}")
+    # print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
+    # print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
+
+    for row_message in range(messages.shape[0]): 
           message = messages['message'][row_message]
-          print(f"{'#'*20} Context message:\n")
+          print(f"{'#'*20} Context message number {row_message:3}:")
           print(message)
-          print(f"{'#'*80} ")    
-          
-          # with context 
+
+          # with context
+          print("with context                  ", end="-->") 
           response = classify_hs(
                  message = message, 
                  protected_characteristics_str = config_values['protected_characteristics_str'], 
@@ -141,9 +142,11 @@ for row_context in range(1): #range(df_context.shape[0]):
                  )
           print(response.choices[0].message.content)
 
-          # without context 
-          print(f"{'#'*80} ")
-          print(f"{'#'*20} Without context!!!")
+          # # without context 
+          # print(f"{'#'*80} ")
+          # print(f"{'#'*20} Without context!!!")
+          
+          print("without context               ", end="-->") 
           response = classify_hs(
                  message = message, 
                  protected_characteristics_str = '', 
@@ -158,9 +161,10 @@ for row_context in range(1): #range(df_context.shape[0]):
                  )
           print(response.choices[0].message.content)
 
-          # without context, examples or chain of thought
-          print(f"{'#'*80} ")
-          print(f"{'#'*20} Without context, examples or chain of thought!!!")
+          # # without context, examples or chain of thought
+          # print(f"{'#'*80} ")
+          # print(f"{'#'*20} Without context, examples or chain of thought!!!")
+          print("no context,examples or c-o-t  ", end="-->") 
           response = classify_hs(
                  message = message, 
                  protected_characteristics_str = '', 
@@ -174,5 +178,6 @@ for row_context in range(1): #range(df_context.shape[0]):
                  safeguarding_focus = ''
                  )
           print(response.choices[0].message.content)
+          print(f"{'#'*30}")
           
     

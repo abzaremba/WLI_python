@@ -92,3 +92,21 @@ def prepare_config(df, ii = 0):
       'safeguarding_focus':df['Safeguarding Focus'][ii]
   }
   return config_values
+
+
+def protected_char_repackage(p1_list, p2_str):
+   # combine two sources of protected characteristics
+   # first input is a list, second is a string
+   all_pch_string = ','.join(p1_list) + p2_str
+
+   # it's easiest to edit in a string, but to remove replacements in a set, so...
+   # make sure to have low caps and remove spaces after comas, if any
+   all_pch_string = all_pch_string.lower().replace(", ", ",")
+
+   # cut again into a list
+   all_pch_list = all_pch_string.split(",")
+   
+   # remove repetitions with set, sort... and shove back into a string lol
+   final_pch_str = ",".join(sorted(set(all_pch_list)))
+
+   return final_pch_str

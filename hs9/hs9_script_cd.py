@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-from hs9_fn import classify_hs, prepare_config
+from hs9_fn import classify_hs, prepare_config, protected_char_repackage
 from pprint import pprint
 
 client = OpenAI(api_key = os.environ.get("OPENAI_API_KEY"))
@@ -94,25 +94,27 @@ for ind in range(len(chain_of_thought_dict)):
   chain_ot_str += "\n" + str(chain_of_thought_dict[ind])[1:-1]
 ############################################################
 
-
-# verbose?
-verbose_switch = False
-
-# read community context and message now in a loop?
-row_context = 0
-row_message = 0
-config_values = prepare_config(df_context, row_context)
-message = messages['message'][row_message]
-
+#####
+# # read community context and message now in a loop?
+# # for individual read, with a context nr cc, and message nr mm:
+# row_context = cc
+# row_message = mm
+# config_values = prepare_config(df_context, row_context)
+# message = messages['message'][row_message]
+# # to pretty print the context and normal print the message
 # pprint(config_values)
 # print(messages)
 
 
 
+# verbose?
+verbose_switch = False
+
+results = []
+
 # no request for input, just use the context and message read from csv files
-for row_context in range(df_context.shape[0]):
+for row_context in range(2):#df_context.shape[0]):
     config_values = prepare_config(df_context, row_context)
-    # pprint(config_values)
 
     print(f"{'#'*30} Context provided number {row_context:3}:")
     # print(f"\n{'#'*5} community_context:\n{config_values['community_context']}")
@@ -121,7 +123,7 @@ for row_context in range(df_context.shape[0]):
     # print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
     # print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
 
-    for row_message in range(messages.shape[0]): 
+    for row_message in range(2):#messages.shape[0]): 
           message = messages['message'][row_message]
           print(f"{'#'*20} Context message number {row_message:3}:")
           print(message)
@@ -141,6 +143,7 @@ for row_context in range(df_context.shape[0]):
                  safeguarding_focus = config_values['safeguarding_focus']
                  )
           print(response.choices[0].message.content)
+          result_with_context = response.choices[0].message.content
 
           # # without context 
           # print(f"{'#'*80} ")
@@ -160,6 +163,7 @@ for row_context in range(df_context.shape[0]):
                  safeguarding_focus = ''
                  )
           print(response.choices[0].message.content)
+          result_no_context = response.choices[0].message.content
 
           # # without context, examples or chain of thought
           # print(f"{'#'*80} ")
@@ -178,6 +182,24 @@ for row_context in range(df_context.shape[0]):
                  safeguarding_focus = ''
                  )
           print(response.choices[0].message.content)
+          result_no_context_no_examples = response.choices[0].message.content
           print(f"{'#'*30}")
+
+          results.append({
+            'Name': config_values.get('Community type', ''),
+            'Organisation_context': config_values.get('community_context', ''),
+            'Geography': config_values.get('geography', ''),
+            'Languages_used': config_values.get('languages', ''),
+            'Safeguarding_focus': config_values.get('safeguarding_focus', ''),
+            'Protected_characteristics': config_values.get('protected_characteristics_str', ''),
+            'Message': message,
+            'Result_with_context': result_with_context,
+            'Result_no_context': result_no_context,
+            'Result_no_context_no_examples': result_no_context_no_examples
+            })
+          
+# Create DataFrame and save to CSV
+results_df = pd.DataFrame(results)
+results_df.to_csv("hs9/data/demo_classification_results.csv", index=False)
           
     

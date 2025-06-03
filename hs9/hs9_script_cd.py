@@ -86,7 +86,16 @@ chain_of_thought_dict = [
      "explanation":"This statement uses stereotypes to demean women by comparing them to animals, which is hate speech based on sex."},
     {'example input':'well my dear lgbtq brothers and sisters i do not want to die at the hands of a muslim terrorist and as you are putting my life in danger with your politics i would like to suggest that you all go fuck yourselves',
      'example output':['hate speech',['gender identity', 'sexual orientation', 'religion'],  [0.97,0.97,1]],
-     "explanation":"This statement combines hostility toward the LGBTQ community with derogatory references to religion, specifically Muslims, and assigns blame. It targets multiple identities and is hate speech."}
+     "explanation":"This statement combines hostility toward the LGBTQ community with derogatory references to religion, specifically Muslims, and assigns blame. It targets multiple identities and is hate speech."},
+    {'example input':"stop acting like such a pretentious tosspot, you're not blessing us with your knowledge here, dude",
+     'example output':['not hate speech',[], [1]],
+     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
+    {'example input':'jesus fuck man do you ever listen to others?',
+     'example output':['not hate speech',[], [1]],
+     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
+    {'example input':"you're talking like such a pretentious douchebag. calm down!",
+     'example output':['not hate speech',[], [1]],
+     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
 ]
 
 chain_ot_str = '\n'
@@ -113,17 +122,17 @@ verbose_switch = False
 results = []
 
 # no request for input, just use the context and message read from csv files
-for row_context in range(5,df_context.shape[0]):
+for row_context in range(df_context.shape[0]):
     config_values = prepare_config(df_context, row_context)
 
     print(f"{'#'*30} Context provided number {row_context:3}:")
-    # print(f"\n{'#'*5} community_context:\n{config_values['community_context']}")
-    # print(f"\n{'#'*5} languages:\n{config_values['languages']}")
-    # print(f"\n{'#'*5} geography:\n{config_values['geography']}")
-    # print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
-    # print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
+    print(f"\n{'#'*5} community_context:\n{config_values['community_context']}")
+    print(f"\n{'#'*5} languages:\n{config_values['languages']}")
+    print(f"\n{'#'*5} geography:\n{config_values['geography']}")
+    print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
+    print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
 
-    for row_message in range(messages.shape[0]): 
+    for row_message in range(29,30):#messages.shape[0]): 
           message = messages['message'][row_message]
           print(f"{'#'*20} Context message number {row_message:3}:")
           print(message)

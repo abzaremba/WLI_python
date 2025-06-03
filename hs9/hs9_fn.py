@@ -29,25 +29,34 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
        chain_ot_section = f"""
     CHAIN-OF-THOUGHT:
     Consider the following chain-of-thought:{chain_ot}"""
+    
+    # context section - if at least one is nonempty
+    if any((community_context, languages, geography, safeguarding_focus)):
+       context_section = f"""ORGANIZATION CONTEXT:
+    {community_context}
+    
+    Safeguarding Focus: {safeguarding_focus}
 
-
-    prompt = f"""
-    DEFINITIONS:
-    Consider the following definition: {HS_definition}
+    Protected Characteristics: {protected_characteristics_str}
 
     GEOGRAPHIC CONTEXT:
     This organization operates in {geography}. Be mindful of **regional interpretations of hate speech** in these locations.
 
     - If certain terms or expressions are **legally restricted** in these regions, classify them more strictly.  
     - If cultural nuances affect interpretation, adapt accordingly.  
-    - Consider regional dialects and multi-language factors ({languages}).
+    - Consider regional dialects and multi-language factors ({languages})."""
+       
+    else:
+       context_section = ""
 
-    ORGANIZATION CONTEXT:
-    {community_context}
-    Safeguarding Focus: {safeguarding_focus}
+    prompt = f"""
+    DEFINITIONS:
+    Consider the following definition: {HS_definition}
 
-    Protected Characteristics: {protected_characteristics_str}
+    INSTRUCTION: 
+    Using the provided definition of "hate speech",  classify the chat fragment delimited by triple backticks as either "hate speech" with respect to one or more of "protected characteristics" or not "hate speech".
 
+    {context_section}    
 
     OUTPUT:
     The output should only contain 3 elements: 

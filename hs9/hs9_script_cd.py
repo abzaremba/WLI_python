@@ -113,7 +113,7 @@ verbose_switch = False
 results = []
 
 # no request for input, just use the context and message read from csv files
-for row_context in range(2):#df_context.shape[0]):
+for row_context in range(5,df_context.shape[0]):
     config_values = prepare_config(df_context, row_context)
 
     print(f"{'#'*30} Context provided number {row_context:3}:")
@@ -123,7 +123,7 @@ for row_context in range(2):#df_context.shape[0]):
     # print(f"\n{'#'*5} protected_characteristics_str:\n{config_values['protected_characteristics_str']}")
     # print(f"\n{'#'*5} safeguarding_focus:\n{config_values['safeguarding_focus']}")
 
-    for row_message in range(2):#messages.shape[0]): 
+    for row_message in range(messages.shape[0]): 
           message = messages['message'][row_message]
           print(f"{'#'*20} Context message number {row_message:3}:")
           print(message)
@@ -186,7 +186,7 @@ for row_context in range(2):#df_context.shape[0]):
           print(f"{'#'*30}")
 
           results.append({
-            'Name': config_values.get('Community type', ''),
+            'Name': config_values.get('community_type', ''),
             'Organisation_context': config_values.get('community_context', ''),
             'Geography': config_values.get('geography', ''),
             'Languages_used': config_values.get('languages', ''),

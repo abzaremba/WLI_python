@@ -87,15 +87,15 @@ chain_of_thought_dict = [
     {'example input':'well my dear lgbtq brothers and sisters i do not want to die at the hands of a muslim terrorist and as you are putting my life in danger with your politics i would like to suggest that you all go fuck yourselves',
      'example output':['hate speech',['gender identity', 'sexual orientation', 'religion'],  [0.97,0.97,1]],
      "explanation":"This statement combines hostility toward the LGBTQ community with derogatory references to religion, specifically Muslims, and assigns blame. It targets multiple identities and is hate speech."},
-    {'example input':"stop acting like such a pretentious tosspot, you're not blessing us with your knowledge here, dude",
-     'example output':['not hate speech',[], [1]],
-     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
-    {'example input':'jesus fuck man do you ever listen to others?',
-     'example output':['not hate speech',[], [1]],
-     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
-    {'example input':"you're talking like such a pretentious douchebag. calm down!",
-     'example output':['not hate speech',[], [1]],
-     "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
+    # {'example input':"stop acting like such a pretentious tosspot, you're not blessing us with your knowledge here, dude",
+    #  'example output':['not hate speech',[], [1]],
+    #  "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
+    # {'example input':'jesus fuck man do you ever listen to others?',
+    #  'example output':['not hate speech',[], [1]],
+    #  "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
+    # {'example input':"you're talking like such a pretentious douchebag. calm down!",
+    #  'example output':['not hate speech',[], [1]],
+    #  "explanation":"This message expresses frustration and includes insults, but does not target any group or protected identity. It can be a part of heated debate. So it is not hate speech."},
 ]
 
 chain_ot_str = '\n'
@@ -134,6 +134,7 @@ for row_context in range(df_context.shape[0]):
 
     for row_message in range(29,30):#messages.shape[0]): 
           message = messages['message'][row_message]
+          message = "You deserve to die!"
           print(f"{'#'*20} Context message number {row_message:3}:")
           print(message)
 
@@ -207,8 +208,8 @@ for row_context in range(df_context.shape[0]):
             'Result_no_context_no_examples': result_no_context_no_examples
             })
           
-# Create DataFrame and save to CSV
-results_df = pd.DataFrame(results)
-results_df.to_csv("hs9/data/demo_classification_results.csv", index=False)
+# # Create DataFrame and save to CSV
+# results_df = pd.DataFrame(results)
+# results_df.to_csv("hs9/data/demo_classification_results.csv", index=False)
           
     

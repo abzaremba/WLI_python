@@ -63,6 +63,7 @@ def classify_hs(message:str, protected_characteristics_str:str, HS_definition:st
     1) "hate speech" or "not hate speech", 
     2) list of "protected characteristic" labels from the list {protected_characteristics_str}, 
     3) list of probabilities with two decimal points, one for each protected characteristic.
+    4) provide short explanation for the classification
 
     OUTPUT FORMAT:
     ['hate speech', ['sexual orientation'], [0.98]]
